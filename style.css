@@ -1,0 +1,19 @@
+main {
+    height: 95vh;
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: rgb(0, 88, 0);
+    font: 1.2rem 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+@media(max-width: 550px){
+    h1 {
+        font-size: 5vw;
+    }
+    canvas {
+        width: 80%;
+    }
+}
