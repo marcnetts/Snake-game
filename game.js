@@ -16,10 +16,33 @@ snake[0] = {
 let direction = "right";
 
 function setRandomPoint() {
-    return{
-        x:Math.floor(Math.random() * (grid - 1) + 1) * box, 
-        y:Math.floor(Math.random() * (grid - 1) + 1) * box
+    let doesMatchSnake = 1;
+    let aux;
+
+    while (doesMatchSnake == 1) {
+        doesMatchSnake = 0;
+        aux = {
+            x:Math.floor(Math.random() * (grid - 1) + 1) * box,
+            y:Math.floor(Math.random() * (grid - 1) + 1) * box
+        };
+        for (i = 0; i < snake.length; i++) {
+            if (aux.x == snake[i].x && aux.y == snake[i].y)
+            {
+                console.log("ponto seria gerado em posicao " + i + "da cobrinha (" + aux.x + ", " + aux.y + ")")
+                doesMatchSnake = 1;
+            }
+        }
     }
+
+    return aux;
+}
+
+function randomFood() {
+    let aux = setRandomPoint;
+    let is = 0;
+    while (aux)
+
+    return aux;
 }
 
 let food = setRandomPoint();
