@@ -2,18 +2,12 @@ let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
 let box = 32;
 let grid = 16;
-let snake = [];
-let pressedDirection = 0;
-let tempo = 200;
+let snake, pressedDirection, tempo, direction, food, resetGame = 0, gameStopped = 0;
 
 gameover_image = new Image();
 gameover_image.src = 'gameover.png';
 
-snake[0] = {
-    x: 8 * box, //8 = posicao inicial
-    y: 8 * box
-}
-let direction = "right";
+document.addEventListener('keydown', update);
 
 function setRandomPoint() {
     let doesMatchSnake = 1;
@@ -28,7 +22,7 @@ function setRandomPoint() {
         for (i = 0; i < snake.length; i++) {
             if (aux.x == snake[i].x && aux.y == snake[i].y)
             {
-                console.log("ponto seria gerado em posicao " + i + "da cobrinha (" + aux.x + ", " + aux.y + ")")
+                console.log("ponto seria gerado em posicao " + i + " da cobrinha (" + aux.x + ", " + aux.y + ")")
                 doesMatchSnake = 1;
             }
         }
@@ -36,16 +30,6 @@ function setRandomPoint() {
 
     return aux;
 }
-
-function randomFood() {
-    let aux = setRandomPoint;
-    let is = 0;
-    while (aux)
-
-    return aux;
-}
-
-let food = setRandomPoint();
 
 function criarBG() {
     context.fillStyle = "lightgreen";
@@ -65,8 +49,6 @@ function criarFood(){
     context.fillStyle = 'red';
     context.fillRect(food.x, food.y, box, box);
 }
-
-document.addEventListener('keydown', update);
 
 function update(event){
     //teclas 37, 38, 39, 40
@@ -126,20 +108,20 @@ function iniciarJogo(){
     for (let i = 1; i < snake.length; i++) {
         if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             //clearInterval(jogo);
-            tempo = 0;
+            gameStopped = 1;
             context.drawImage(gameover_image, 0, 0);
             //alert("Game Over :(");
         }
     }
-    
-    let newHead = {
-        x: snakeX,
-        y: snakeY
+
+    snake.unshift({x: snakeX, y: snakeY});
+
+    if(resetGame)
+    {
+        clearTimeout(loop);
+        setupGame();
     }
-
-    snake.unshift(newHead);
-
-    if (tempo != 0)
+    else if (!gameStopped)
         setTimeout(loop, tempo);
 }
 
@@ -147,6 +129,27 @@ function loop(){ //permite limpar as variáveis de iniciarJogo()
     iniciarJogo();
 }
 
-setTimeout(loop, tempo);
-//let jogo = setInterval(iniciarJogo, 300);
+function setupGame(){
+    snake = [];
+    pressedDirection = 0;
+    tempo = 200;
+    snake[0] = {
+        x: 8 * box,
+        y: 8 * box
+    }
+    direction = "right";
+    food = setRandomPoint();
+    resetGame = 0;
+    gameStopped = 0;
+    loop();
+}
 
+function newGame(){
+    if (gameStopped == 1)
+        setupGame();
+    else
+        resetGame = 1;
+}
+
+setupGame();
+//let jogo = setInterval(iniciarJogo, 300);
